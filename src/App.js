@@ -1,26 +1,102 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import Card from "./components/Card";
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [value, setValue] = useState("");
+    const [doingList, setDoingList] = useState([]);
+    const [doneList, setDoneList] = useState([]);
+    const [todoList, setTodoList] = useState([
+        {
+            name: 1,
+            type: "todo",
+        },
+        {
+            name: 2,
+            type: "todo",
+        },
+        {
+            name: 3,
+            type: "todo",
+        }
+    ]);
+    
+    function handleChangeInput(e) {
+        const value = e.target.value;
+        setValue(value);
+    }
+
+    function addTodo() {
+        setTodoList([...todoList,  {
+            name: value,
+            type: "todo",
+        }]);
+    }
+
+
+    function moveToDoing(task) {
+        console.log(task);
+        const newTodoList = todoList.filter(todoTask => {
+            if (todoTask.name !== task.name) {
+                return todoTask
+            }
+        });
+        setTodoList(newTodoList);
+        setDoingList([...doingList, {...task, type: "doing"}]);
+    }
+
+    function moveToDone(task) {
+      const newDoingList = doingList.filter(doingList => {
+        if (doingList.name !== task.name) {
+            return doingList
+        }
+    });
+    setDoingList(newDoingList);
+    setDoneList([...doneList, task]);
+  }
+    return (
+        <div className="Container">
+            <div className="Todobar">
+                <p>Add your Todo item :</p>
+                <input type="text" onChange={handleChangeInput}/>
+                <button onClick={addTodo}>Add</button>
+            </div>
+            <div className="TodoCols">
+                <div className="Col-3">
+                    <h1>Todo</h1>
+                    {
+                        todoList.map(task => {
+                            return (
+                                <Card task={task} moveToDoing={moveToDoing}/>
+                            )
+                        })
+                    }
+                </div>
+                <div className="Col-3">
+                    <h1>Doing</h1>
+                    {
+                        doingList.map(task => {
+                            return (
+                                <Card task={task} moveToDone={moveToDone}/>
+
+                            )
+                        })
+                    }
+                </div>
+
+                <div className="Col-3">
+                    <h1>Done</h1>
+                    {
+                        doneList.map(task => {
+                            return (
+                                <Card task={task}/>
+                            )
+                        })
+                    }
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default App;
