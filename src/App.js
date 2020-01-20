@@ -36,8 +36,17 @@ function App() {
     ]);
   }
 
+  function moveToDo(task) {
+    const newDoingList = doingList.filter(doingList => {
+      if (doingList.name !== doingList.name) {
+        return doingList;
+      }
+    });
+    setTodoList([...todoList, { ...task, type: "todo" }]);
+    setDoingList(newDoingList);
+  }
+
   function moveToDoing(task) {
-    console.log(task);
     const newTodoList = todoList.filter(todoTask => {
       if (todoTask.name !== task.name) {
         return todoTask;
@@ -56,6 +65,16 @@ function App() {
     setDoingList(newDoingList);
     setDoneList([...doneList, { ...task, type: "done" }]);
   }
+
+  function moveDoneToDoing(task) {
+    const newDoneList = doneList.filter(doneList => {
+      if (doneList.name === task.name) {
+        return "";
+      }
+    });
+    setDoneList(newDoneList);
+    setDoingList([...doingList, { ...task, type: "doing" }]);
+  }
   return (
     <div className="Container">
       <div className="Todobar">
@@ -73,14 +92,16 @@ function App() {
         <div className="Col-3">
           <h1>Doing</h1>
           {doingList.map(task => {
-            return <Card task={task} moveToDone={moveToDone} />;
+            return (
+              <Card task={task} moveToDone={moveToDone} moveToDo={moveToDo} />
+            );
           })}
         </div>
 
         <div className="Col-3">
           <h1>Done</h1>
           {doneList.map(task => {
-            return <Card task={task} />;
+            return <Card task={task} moveDoneToDoing={moveDoneToDoing} />;
           })}
         </div>
       </div>

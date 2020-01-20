@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 function Card(props) {
-  function typerecognition() {}
   console.log(props.task, "task");
 
   return (
@@ -9,17 +8,28 @@ function Card(props) {
       <p>{props.task.name}</p>
 
       {props.task.type === "todo" && (
-        <button className="Doing" onClick={() => props.moveToDoing(props.task)}>
-          Move to Doing
-        </button>
+        <button onClick={() => props.moveToDoing(props.task)}>&#8594;</button>
       )}
       {props.task.type === "doing" && (
-        <button className="Done" onClick={() => props.moveToDone(props.task)}>
-          Move to Done
+        <>
+          <button onClick={() => props.moveToDo(props.task)}>
+            TODO &#8592;
+          </button>
+          <button onClick={() => props.moveToDone(props.task)}>
+            DONE &#8594;
+          </button>
+        </>
+      )}
+      {props.task.type === "done" && (
+        <button onClick={() => props.moveDoneToDoing(props.task)}>
+          &#8592;
         </button>
       )}
-
-      <button className="Edit">Edit</button>
+      {/* {
+        <button onClick={() => props.moveToDoing(props.task)}>&#8594;</button>
+        <button onClick={() => props.moveToDone(props.task)}>&#8592;</button>
+        <button className="Edit">Edit</button>
+      } */}
     </div>
   );
 }
